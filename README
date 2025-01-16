@@ -22,11 +22,11 @@ Komihash: https://github.com/avaneev/komihash
 
 # METHODS
 
-## **my $str = komihash($str, $seed)**
+## **$num = komihash($str, $seed)**
 
 returns 64bit integer hash for the given string and seed.
 
-## **my $hex = komihash\_hex($str, $seed)**
+## **$hex = komihash\_hex($str, $seed)**
 
 returns hex string hash for the given string and seed.
 
