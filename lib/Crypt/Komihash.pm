@@ -34,3 +34,25 @@ Crypt::Komihash - Komihash implementation in Perl
 Komihash is a super fast modern hashing algorithm that converts strings into
 64bit integers. Mainly designed for hash-table, hash-map, and bloom-filter
 uses.
+
+=head1 METHODS
+
+=over 4
+
+=item B<komihash($str, $seed)>
+
+returns 64bit integer hash for the given string and seed.
+
+=item B<komihash_hex($str, $seed)>
+
+returns hex string hash for the given string and seed.
+
+=back
+
+=head1 BUGS
+
+Submit issues on Github: L<https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues>
+
+=head1 AUTHOR
+
+Scott Baker - L<https://www.perturb.org/>
