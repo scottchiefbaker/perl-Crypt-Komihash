@@ -8,13 +8,13 @@
 // XS binding
 MODULE = Crypt::Komihash   PACKAGE = Crypt::Komihash
 
-UV komihash(const char *input, int length(input), UV seed )
+UV komihash(const char *input, int length(input), UV seed = 0)
     CODE:
         RETVAL = (UV) komihash(input, STRLEN_length_of_input, seed);
     OUTPUT:
         RETVAL
 
-char *komihash_hex(const char *input, int length(input), UV seed )
+char *komihash_hex(const char *input, int length(input), UV seed = 0)
     CODE:
 		static char value64[17];
 
