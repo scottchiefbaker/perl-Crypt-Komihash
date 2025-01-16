@@ -1,0 +1,37 @@
+# NAME
+
+Crypt::Komihash - Komihash implementation in Perl
+
+# SYNOPSIS
+
+        use Crypt::Komihash qw(komihash komihash_hex);
+
+        my $str  = "Hello world";
+        my $seed = 0;
+
+        my $num     = Crypt::Komihash::komihash($str, $seed);     # 3745467240760726046
+        my $hex_str = Crypt::Komihash::komihash_hex($str, $seed); # 33fa929c7367d21e
+
+# DESCRIPTION
+
+Komihash is a super fast modern hashing algorithm that converts strings into
+64bit integers. Mainly designed for hash-table, hash-map, and bloom-filter
+uses.
+
+# METHODS
+
+- **komihash($str, $seed)**
+
+    returns 64bit integer hash for the given string and seed.
+
+- **komihash\_hex($str, $seed)**
+
+    returns hex string hash for the given string and seed.
+
+# BUGS
+
+Submit issues on Github: [https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues](https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues)
+
+# AUTHOR
+
+Scott Baker - [https://www.perturb.org/](https://www.perturb.org/)
