@@ -22,13 +22,13 @@ Komihash: https://github.com/avaneev/komihash
 
 # METHODS
 
-- **komihash($str, $seed)**
+## **my $str = komihash($str, $seed)**
 
-    returns 64bit integer hash for the given string and seed.
+returns 64bit integer hash for the given string and seed.
 
-- **komihash\_hex($str, $seed)**
+## **my $hex = komihash\_hex($str, $seed)**
 
-    returns hex string hash for the given string and seed.
+returns hex string hash for the given string and seed.
 
 # BUGS
 
