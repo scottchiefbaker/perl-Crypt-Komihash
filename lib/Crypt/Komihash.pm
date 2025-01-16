@@ -39,11 +39,11 @@ Komihash: https://github.com/avaneev/komihash
 
 =head1 METHODS
 
-=head2 B<$num = komihash($str, $seed)>
+=head2 B<$num = komihash($str, $seed = 0)>
 
 returns 64bit integer hash for the given string and seed.
 
-=head2 B<$hex = komihash_hex($str, $seed)>
+=head2 B<$hex = komihash_hex($str, $seed = 0)>
 
 returns hex string hash for the given string and seed.
 
