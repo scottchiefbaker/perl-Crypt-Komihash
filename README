@@ -9,8 +9,8 @@ Crypt::Komihash - Komihash implementation in Perl
     my $str  = "Hello world";
     my $seed = 0;
 
-    my $num     = Crypt::Komihash::komihash($str, $seed);     # 3745467240760726046
-    my $hex_str = Crypt::Komihash::komihash_hex($str, $seed); # 33fa929c7367d21e
+    my $num     = komihash($str, $seed);     # 3745467240760726046
+    my $hex_str = komihash_hex($str, $seed); # 33fa929c7367d21e
 
 # DESCRIPTION
 
