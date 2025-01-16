@@ -23,11 +23,11 @@ Crypt::Komihash - Komihash implementation in Perl
 
   use Crypt::Komihash qw(komihash komihash_hex);
 
-  my $str  = "Hello world";
-  my $seed = 0;
+  my $input = "Hello world";
+  my $seed  = 0;
 
-  my $num     = komihash($str, $seed);     # 3745467240760726046
-  my $hex_str = komihash_hex($str, $seed); # 33fa929c7367d21e
+  my $num     = komihash($input, $seed);     # 3745467240760726046
+  my $hex_str = komihash_hex($input, $seed); # 33fa929c7367d21e
 
 =head1 DESCRIPTION
 
@@ -39,13 +39,13 @@ Komihash: https://github.com/avaneev/komihash
 
 =head1 METHODS
 
-=head2 B<$num = komihash($str, $seed = 0)>
+=head2 B<$num = komihash($bytes, $seed = 0)>
 
-returns 64bit integer hash for the given string and seed.
+returns 64bit integer hash for the given input and seed.
 
-=head2 B<$hex = komihash_hex($str, $seed = 0)>
+=head2 B<$hex = komihash_hex($bytes, $seed = 0)>
 
-returns hex string hash for the given string and seed.
+returns hex string hash for the given input and seed.
 
 =head1 BUGS
 
