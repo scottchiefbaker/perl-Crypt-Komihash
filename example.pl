@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use v5.16;
+use Crypt::Komihash qw(komihash komihash_hex);
 use Getopt::Long;
 
 my $seed = 0;
@@ -14,8 +15,6 @@ GetOptions(
 ###############################################################################
 ###############################################################################
 
-use Crypt::Komihash qw(komihash komihash_hex);
-
 print "Komihash using seed: #$seed\n";
 print "\n";
 
@@ -25,14 +24,12 @@ if (!@ARGV) {
 	@ARGV = qw(one two three four);
 }
 
-# Loop through each string of bytes and calc the decimal and hex versions
+# Loop through each group of bytes and calc the decimal and hex versions
 foreach my $bytes (@ARGV) {
-	my $input = $bytes;
+	my $num = komihash($bytes, $seed);
+	my $hex = komihash_hex($bytes, $seed);
 
-	my $num = komihash($input, $seed);
-	my $hex = komihash_hex($input, $seed);
-
-	printf("%15s => %20llu / %s\n", $input, $num, $hex);
+	printf("%15s => %20llu / %s\n", $bytes, $num, $hex);
 }
 
 ###############################################################################
