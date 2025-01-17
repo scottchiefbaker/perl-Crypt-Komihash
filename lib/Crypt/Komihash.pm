@@ -21,7 +21,7 @@ Crypt::Komihash - Komihash implementation in Perl
 
 =head1 SYNOPSIS
 
-  use Crypt::Komihash qw(komihash komihash_hex);
+  use Crypt::Komihash qw(komihash komihash_hex komirand_seed komirand64);
 
   my $input = "Hello world";
   my $seed  = 0;
@@ -29,11 +29,14 @@ Crypt::Komihash - Komihash implementation in Perl
   my $num     = komihash($input, $seed);     # 3745467240760726046
   my $hex_str = komihash_hex($input, $seed); # 33fa929c7367d21e
 
+  komirand_seed($seed1, $seed2);
+  my $rand    = komirand64();
+
 =head1 DESCRIPTION
 
 Komihash is a super fast modern hashing algorithm that converts strings into
 64bit integers. Mainly designed for hash-table, hash-map, and bloom-filter
-uses.
+uses. As a bonus, Komihash also includes a pseudo random number generator.
 
 Komihash: L<https://github.com/avaneev/komihash>
 
@@ -48,6 +51,14 @@ returns 64bit integer hash for the given input and seed.
 =head3 B<$hex = komihash_hex($bytes, $seed = 0)>
 
 returns hex string hash for the given input and seed.
+
+=head3 B<komirand_seed($seed1, $seed2)>
+
+seed the Komirand PRNG with two 64bit unsigned integers
+
+=head3 B<$num = komirand64()>
+
+returns a random 64bit unsigned integer
 
 =head1 BUGS
 
