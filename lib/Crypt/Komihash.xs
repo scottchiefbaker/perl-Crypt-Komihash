@@ -5,6 +5,22 @@
 #include <string.h>
 #include "komihash.h"
 
+// Global seeds used for komirand
+uint64_t SEED1;
+uint64_t SEED2;
+
+// External function allow setting the seeds
+static void komirand_seed(uint64_t seed1, uint64_t seed2) {
+	SEED1 = seed1;
+	SEED2 = seed2;
+}
+
+static uint64_t komirand64() {
+	uint64_t ret = komirand(&SEED1, &SEED2);
+
+	return ret;
+}
+
 // XS binding
 MODULE = Crypt::Komihash   PACKAGE = Crypt::Komihash
 
@@ -22,3 +38,7 @@ char *komihash_hex(const char *input, int length(input), UV seed = 0)
         RETVAL = value64;
     OUTPUT:
         RETVAL
+
+UV komirand64()
+
+void komirand_seed(UV seed1, UV seed2)
