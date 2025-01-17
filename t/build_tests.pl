@@ -20,11 +20,16 @@ GetOptions(
 ###############################################################################
 
 my $file  = $ARGV[0] || "";
-if (!-r $file) {
+if (!@ARGV) {
 	die(usage());
 }
 
-my @lines = file_get_contents($file, 1);
+my @lines;
+if (-r $file) {
+	@lines = file_get_contents($file, 1);
+} else {
+	@lines = @ARGV;
+}
 
 foreach my $l (@lines) {
 	my $input = trim($l);
@@ -119,7 +124,7 @@ sub file_put_contents {
 }
 
 sub usage {
-	my $ret = "$0 [input.txt]\n";
+	my $ret = "$0 [input.txt] [word1] [word2]\n";
 
 	return $ret;
 }
