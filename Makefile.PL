@@ -7,7 +7,7 @@ WriteMakefile(
 	XSMULTI          => 1,
 	AUTHOR           => 'Scott Baker <bakerscot@cpan.org>',
 	LICENSE          => 'mit',
-	MIN_PERL_VERSION => '5.012',
+	MIN_PERL_VERSION => '5.016',
 	LIBS             => [''],                   # e.g., '-lm'
     DEFINE           => '',                     # e.g., '-DHAVE_SOMETHING'
     INC              => '-Ilib',                # path to 'Crypt/Komihash.h'
