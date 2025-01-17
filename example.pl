@@ -15,7 +15,8 @@ GetOptions(
 ###############################################################################
 ###############################################################################
 
-print "Komihash using seed: #$seed\n";
+my $seed_hex = sprintf("0x%x", $seed);
+print "Komihash using seed: #$seed / $seed_hex\n";
 print "\n";
 
 # If nothing specified on the CLI we use some defaults
