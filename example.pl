@@ -3,21 +3,37 @@
 use strict;
 use warnings;
 use v5.16;
+use Getopt::Long;
+
+my $seed = 0;
+GetOptions(
+	'seed=i' => \$seed,
+	'help'   => \&usage,
+);
 
 ###############################################################################
 ###############################################################################
 
 use Crypt::Komihash qw(komihash komihash_hex);
 
-my $input = $ARGV[0]     || "default";
-my $seed  = int($ARGV[1] || 0);
-
-my $num = komihash($input, $seed);
-my $hex = komihash_hex($input, $seed);
-
 print "Komihash using seed: #$seed\n";
 print "\n";
-print "'$input' => $num / $hex\n";
+
+# If nothing specified on the CLI we use some defaults
+if (!@ARGV) {
+	#@ARGV = qw(The quick brown fox jumped over the lazy red dog);
+	@ARGV = qw(one two three four);
+}
+
+# Loop through each string of bytes and calc the decimal and hex versions
+foreach my $bytes (@ARGV) {
+	my $input = $bytes;
+
+	my $num = komihash($input, $seed);
+	my $hex = komihash_hex($input, $seed);
+
+	printf("%15s => %20llu / %s\n", $input, $num, $hex);
+}
 
 ###############################################################################
 ###############################################################################
@@ -94,6 +110,11 @@ sub file_put_contents {
 	return length($data);
 }
 
+sub usage {
+	print "Usage: $0 [--seed 99] word1 word2 word3\n";
+	exit(7);
+}
+
 # Creates methods k() and kd() to print, and print & die respectively
 BEGIN {
 	if (eval { require Data::Dump::Color }) {
@@ -112,4 +133,3 @@ BEGIN {
 }
 
 # vim: tabstop=4 shiftwidth=4 noexpandtab autoindent softtabstop=4
-
