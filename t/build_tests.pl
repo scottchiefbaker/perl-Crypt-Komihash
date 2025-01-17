@@ -10,10 +10,12 @@ use Crypt::Komihash qw(komihash_hex komihash);
 my $debug   = 0;
 my $hex     = 0;
 my $decimal = 0;
+my $GLOBAL_SEED    = undef;
 GetOptions(
 	'debug'   => \$debug,
 	'hex'     => \$hex,
 	'decimal' => \$decimal,
+	'seed=i'  => \$GLOBAL_SEED,
 );
 
 ###############################################################################
@@ -33,9 +35,13 @@ if (-r $file) {
 
 foreach my $l (@lines) {
 	my $input = trim($l);
-	my $seed  = perl_rand64();
 	my $hash  = '';
 	my $func  = '';
+	my $seed  = perl_rand64();
+
+	if (defined($GLOBAL_SEED)) {
+		$seed = $GLOBAL_SEED;
+	}
 
 	if ($hex) {
 		$hash = komihash_hex($input, $seed);
@@ -45,7 +51,7 @@ foreach my $l (@lines) {
 		$func = 'komihash';
 	}
 
-	printf("cmp_ok($func(%s, %23llu), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
+	printf("cmp_ok($func(%15s, %23llu), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
 }
 
 ###############################################################################
