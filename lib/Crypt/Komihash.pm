@@ -51,6 +51,28 @@ returns hex string hash for the given input and seed.
 
 Submit issues on Github: L<https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues>
 
+=head1 SEE ALSO
+
+=over
+
+=item *
+
+Crypt::xxHash
+
+=item *
+
+Digest::FarmHash
+
+=item *
+
+Digest::SpookyHash
+
+=item *
+
+Digest::SHA
+
+=back
+
 =head1 AUTHOR
 
 Scott Baker - L<https://www.perturb.org/>
