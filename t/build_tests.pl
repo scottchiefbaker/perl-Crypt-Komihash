@@ -5,11 +5,15 @@ use warnings;
 use v5.16;
 
 use Getopt::Long;
-use Crypt::Komihash qw(komihash_hex);
+use Crypt::Komihash qw(komihash_hex komihash);
 
-my $debug = 0;
+my $debug   = 0;
+my $hex     = 0;
+my $decimal = 0;
 GetOptions(
-	'debug' => \$debug,
+	'debug'   => \$debug,
+	'hex'     => \$hex,
+	'decimal' => \$decimal,
 );
 
 ###############################################################################
@@ -25,9 +29,18 @@ my @lines = file_get_contents($file, 1);
 foreach my $l (@lines) {
 	my $input = trim($l);
 	my $seed  = rand() * perl_rand64();
-	my $hex   = komihash_hex($input, $seed);
+	my $hash  = '';
+	my $func  = '';
 
-	printf("cmp_ok(komihash_hex(%s, %18d), 'eq', '%s');\n", "\"$input\"", $seed, $hex);
+	if ($hex) {
+		$hash = komihash_hex($input, $seed);
+		$func = 'komihash_hex';
+	} else {
+		$hash = komihash($input, $seed);
+		$func = 'komihash';
+	}
+
+	printf("cmp_ok($func(%s, %18d), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
 }
 
 ###############################################################################
