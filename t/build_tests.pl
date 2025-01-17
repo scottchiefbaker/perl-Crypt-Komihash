@@ -28,7 +28,7 @@ my @lines = file_get_contents($file, 1);
 
 foreach my $l (@lines) {
 	my $input = trim($l);
-	my $seed  = rand() * perl_rand64();
+	my $seed  = perl_rand64();
 	my $hash  = '';
 	my $func  = '';
 
@@ -40,7 +40,7 @@ foreach my $l (@lines) {
 		$func = 'komihash';
 	}
 
-	printf("cmp_ok($func(%s, %18d), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
+	printf("cmp_ok($func(%s, %23llu), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
 }
 
 ###############################################################################
@@ -142,8 +142,8 @@ BEGIN {
 }
 
 sub perl_rand64 {
-	my $high = rand() * 4294967295;
-	my $low  = rand() * 4294967295;
+	my $high = int(rand() * 4294967295);
+	my $low  = int(rand() * 4294967295);
 
 	my $ret = ($high << 32) | $low;
 
