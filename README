@@ -18,7 +18,9 @@ Komihash is a super fast modern hashing algorithm that converts strings into
 64bit integers. Mainly designed for hash-table, hash-map, and bloom-filter
 uses.
 
-Komihash: https://github.com/avaneev/komihash
+Komihash: [https://github.com/avaneev/komihash](https://github.com/avaneev/komihash)
+
+**Note:** This module _requires_ a 64bit CPU
 
 # METHODS
 
