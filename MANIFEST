@@ -7,4 +7,5 @@ example.pl
 lib/Crypt/Komihash.pm
 lib/Crypt/Komihash.xs
 lib/Crypt/komihash.h
-t/02-upstream-tests.t
+t/01-komihash.t
+t/02-komihash_hex.t
