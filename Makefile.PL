@@ -1,4 +1,13 @@
 use ExtUtils::MakeMaker;
+use Config;
+
+#my $is_64bit = ($Config{use64bitint} || $Config{use64bitall});
+my $is_64bit  = $Config{uvsize} >= 8;
+
+# Cannot build if we don't have 64bit UVs
+if (!$is_64bit) {
+	die "This module requires a 64-bit platform.\n";
+}
 
 WriteMakefile(
 	NAME             => 'Crypt::Komihash',
