@@ -10,6 +10,7 @@ our $VERSION = '0.02';
 XSLoader::load('Crypt::Komihash', $VERSION);
 
 our @EXPORT_OK = qw(komihash komihash_hex komirand_seed komirand64);
+our %EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
 
 1;
 
