@@ -5,6 +5,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include "komihash.h"
+#include "rdtsc_rand.h"
 
 // Global seeds used for komirand
 uint64_t SEED1;
@@ -44,3 +45,7 @@ char *komihash_hex(const char *input, int length(input), UV seed = 0)
 UV komirand64()
 
 void komirand_seed(UV seed1, UV seed2)
+
+UV rdtsc_rand64()
+
+UV get_rdtsc()
