@@ -3,6 +3,7 @@
 #include "XSUB.h"
 #include <ctype.h>
 #include <string.h>
+#include <inttypes.h>
 #include "komihash.h"
 
 // Global seeds used for komirand
@@ -34,7 +35,8 @@ char *komihash_hex(const char *input, int length(input), UV seed = 0)
     CODE:
 		static char value64[17];
 
-		sprintf(value64, "%016lx", (uint64_t) komihash(input, STRLEN_length_of_input, seed));
+		// We use PRIx64 here for portability... 64bit hex number
+		sprintf(value64, "%016" PRIx64, (uint64_t) komihash(input, STRLEN_length_of_input, seed));
         RETVAL = value64;
     OUTPUT:
         RETVAL
