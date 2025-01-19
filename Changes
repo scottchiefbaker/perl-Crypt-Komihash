@@ -1,3 +1,6 @@
+v0.03 - 2025-01-18
+	- Included rdtsc_rand.h in MANIFEST so we build correctly
+
 v0.02 - 2025-01-18
 	- Minimum Perl version v5.16
 	- Update links to Github
