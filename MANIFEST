@@ -7,5 +7,6 @@ example.pl
 lib/Crypt/Komihash.pm
 lib/Crypt/Komihash.xs
 lib/Crypt/komihash.h
+lib/Crypt/rdtsc_rand.h
 t/01-komihash.t
 t/02-komihash_hex.t
