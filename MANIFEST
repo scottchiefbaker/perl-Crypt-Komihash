@@ -12,3 +12,4 @@ lib/Crypt/rdtsc_rand.h
 t/01-komihash.t
 t/02-komihash_hex.t
 t/build_tests.pl
+rdtsc_rand.h
