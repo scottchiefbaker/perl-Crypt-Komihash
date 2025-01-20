@@ -4,16 +4,18 @@ Crypt::Komihash - Komihash implementation in Perl
 
 # SYNOPSIS
 
-    use Crypt::Komihash qw(komihash komihash_hex komirand_seed komirand64);
+```perl
+use Crypt::Komihash qw(komihash komihash_hex komirand_seed komirand64);
 
-    my $input = "Hello world";
-    my $seed  = 0;
+my $input = "Hello world";
+my $seed  = 0;
 
-    my $num     = komihash($input, $seed);     # 3745467240760726046
-    my $hex_str = komihash_hex($input, $seed); # 33fa929c7367d21e
+my $num     = komihash($input, $seed);     # 3745467240760726046
+my $hex_str = komihash_hex($input, $seed); # 33fa929c7367d21e
 
-    komirand_seed($seed1, $seed2);
-    my $rand    = komirand64();
+komirand_seed($seed1, $seed2);
+my $rand    = komirand64();
+```
 
 # DESCRIPTION
 
