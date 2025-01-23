@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-// rdtsc_rand.h: v0.3
+// rdtsc_rand.h: v0.5pre
 //
 // https://github.com/scottchiefbaker/rdtsc_rand
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,12 +46,13 @@ uint64_t get_rdtsc() {
 	return count;
 #elif defined(ARDUINO)
 	return micros();
-#elif defined(__x86_64) && (defined(__GNUC__) || defined(__clang__))
+#elif (defined(__x86_64) || defined(__i386__) || defined(__i686__)) && (defined(__GNUC__) || defined(__clang__))
 	uint32_t low, high;
 	__asm__ volatile ("rdtsc" : "=a"(low), "=d"(high));
 	return ((uint64_t)(high) << 32) | low;
 #else
-	#error "Unsupported platform"
+	#warning "rdtsc_rand: Unknown system type. Results will be 0."
+	return 0;
 #endif
 }
 
