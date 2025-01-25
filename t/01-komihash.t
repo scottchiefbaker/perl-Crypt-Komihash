@@ -15,6 +15,17 @@ cmp_ok(komihash("Captain\nPicard", 1486715439267347712), 'eq', '1472910457672746
 cmp_ok(komihash("____________"   , 1931211277984306176), 'eq', '7146112379868711646');
 cmp_ok(komihash("\0\0\0\0"       , 0)                  , 'eq', '204526195655617521');
 
+# Test vectors from the docs: https://github.com/avaneev/komihash/blob/main/README.md
+cmp_ok(komihash("A 16-byte string", 0)                , 'eq', '5079121572472399782');
+cmp_ok(komihash("The new string"  , 0)                , 'eq', '17405963669413835315');
+cmp_ok(komihash(      "7 chars"   , 0)                , 'eq', '3193420946220978635');
+cmp_ok(komihash("A 16-byte string", 256)              , 'eq', '1279898376143709425');
+cmp_ok(komihash("The new string"  , 256)              , 'eq', '4198401542723846697');
+cmp_ok(komihash(      "7 chars"   , 256)              , 'eq', '14986021348583138210');
+cmp_ok(komihash("A 16-byte string", 81985529216486895), 'eq', '2787606407351945493');
+cmp_ok(komihash("The new string"  , 81985529216486895), 'eq', '7122946504907885749');
+cmp_ok(komihash(      "7 chars"   , 81985529216486895), 'eq', '10424562787020495168');
+
 done_testing();
 
 #############################################################
