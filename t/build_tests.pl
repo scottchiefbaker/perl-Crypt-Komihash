@@ -46,12 +46,15 @@ foreach my $l (@lines) {
 	if ($hex) {
 		$hash = komihash_hex($input, $seed);
 		$func = 'komihash_hex';
+
+		printf("cmp_ok($func(%15s, %23llu), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
 	} else {
 		$hash = komihash($input, $seed);
 		$func = 'komihash';
+
+		printf("cmp_ok($func(%15s, %23llu), '==', %u);\n", "\"$input\"", $seed, $hash);
 	}
 
-	printf("cmp_ok($func(%15s, %23llu), 'eq', '%s');\n", "\"$input\"", $seed, $hash);
 }
 
 ###############################################################################
