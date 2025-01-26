@@ -5,7 +5,7 @@ use warnings;
 use base qw(Exporter);
 require XSLoader;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 XSLoader::load('Crypt::Komihash', $VERSION);
 
