@@ -15,8 +15,12 @@ GetOptions(
 	'debug'   => \$debug,
 	'hex'     => \$hex,
 	'decimal' => \$decimal,
-	'seed=i'  => \$GLOBAL_SEED,
+	'seed=s'  => \$GLOBAL_SEED,
 );
+
+if ($GLOBAL_SEED =~ /0x/){
+	$GLOBAL_SEED = hex($GLOBAL_SEED);
+}
 
 ###############################################################################
 ###############################################################################
