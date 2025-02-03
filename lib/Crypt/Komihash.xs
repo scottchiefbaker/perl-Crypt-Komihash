@@ -36,11 +36,16 @@ static uint64_t komirand64() {
 // XS binding
 MODULE = Crypt::Komihash   PACKAGE = Crypt::Komihash
 
-UV komihash(const char *input, int length(input), UV seed = 0)
-    CODE:
-        RETVAL = (UV) komihash(input, STRLEN_length_of_input, seed);
-    OUTPUT:
-        RETVAL
+UV komihash(SV *input, UV seednum = 0)
+	CODE:
+		STRLEN len = 0;
+		// Take the bytes in input, put the length in len, and get a pointer to the bytes
+		// We use SvPVbyte instead of SvPV to handle unicode correctly
+		char *buf  = SvPVbyte(input, len);
+
+		RETVAL = (UV)komihash(buf, len, seednum);
+	OUTPUT:
+		RETVAL
 
 char *komihash_hex(const char *input, int length(input), UV seed = 0)
     CODE:
