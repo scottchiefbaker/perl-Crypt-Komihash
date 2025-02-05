@@ -35,6 +35,7 @@ static uint64_t komirand64() {
 
 // XS binding
 MODULE = Crypt::Komihash   PACKAGE = Crypt::Komihash
+PROTOTYPES: DISABLED
 
 UV komihash(SV *input, UV seednum = 0)
 	CODE:
