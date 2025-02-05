@@ -12,14 +12,14 @@ if (!$is_64bit) {
 WriteMakefile(
 	NAME             => 'Crypt::Komihash',
 	VERSION_FROM     => 'lib/Crypt/Komihash.pm',
-    ABSTRACT         => 'Komihash implementation in Perl',
+	ABSTRACT         => 'Komihash implementation in Perl',
 	XSMULTI          => 1,
 	AUTHOR           => 'Scott Baker <bakerscot@cpan.org>',
 	LICENSE          => 'mit',
 	MIN_PERL_VERSION => '5.016',
 	LIBS             => [''],                   # e.g., '-lm'
-    DEFINE           => '',                     # e.g., '-DHAVE_SOMETHING'
-    INC              => '-Ilib',                # path to 'Crypt/Komihash.h'
+	DEFINE           => '',                     # e.g., '-DHAVE_SOMETHING'
+	INC              => '-Ilib',                # path to 'Crypt/Komihash.h'
 
 	PREREQ_PM          => { 'ExtUtils::MakeMaker' => '7.12', },
 	CONFIGURE_REQUIRES => { 'ExtUtils::MakeMaker' => '7.12', },
