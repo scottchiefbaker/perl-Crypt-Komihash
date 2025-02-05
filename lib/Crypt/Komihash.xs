@@ -11,7 +11,7 @@
 uint64_t SEED1;
 uint64_t SEED2;
 
-bool has_been_seeded = false;
+int8_t has_been_seeded = 0;
 
 // External function allow setting the seeds
 static void komirand_seed(uint64_t seed1, uint64_t seed2) {
@@ -20,7 +20,7 @@ static void komirand_seed(uint64_t seed1, uint64_t seed2) {
 
 	//printf("SEED: %llu / %llu\n", seed1, seed2);
 
-	has_been_seeded = true;
+	has_been_seeded = 1;
 }
 
 static uint64_t komirand64() {
