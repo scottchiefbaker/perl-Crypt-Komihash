@@ -1,20 +1,20 @@
 /**
  * @file komihash.h
  *
- * @version 5.25
+ * @version 5.28
  *
- * @brief The inclusion file for the "komihash" 64-bit hash function,
- * the "komirand" 64-bit PRNG, and streamed "komihash" implementation.
+ * @brief The header file for the "komihash" 64-bit hash function,
+ * the "komirand" 64-bit PRNG, and the streamed "komihash" implementation.
  *
  * The source code is written in ISO C99, with full C++ compliance enabled
- * conditionally and automatically, if compiled with a C++ compiler.
+ * conditionally and automatically when compiled with a C++ compiler.
  *
  * This function is named the way it is named is to honor the Komi Republic
  * (located in Russia), native to the author.
  *
  * Description is available at https://github.com/avaneev/komihash
  *
- * E-mail: aleksey.vaneev@gmail.com or info@voxengo.com
+ * Email: aleksey.vaneev@gmail.com or info@voxengo.com
  *
  * LICENSE:
  *
@@ -42,7 +42,7 @@
 #ifndef KOMIHASH_INCLUDED
 #define KOMIHASH_INCLUDED
 
-#define KOMIHASH_VER_STR "5.25" ///< KOMIHASH source code version string.
+#define KOMIHASH_VER_STR "5.28" ///< KOMIHASH source code version string.
 
 /**
  * @def KOMIHASH_NS_CUSTOM
@@ -224,6 +224,27 @@
 #endif // GCC built-ins check
 
 /**
+ * @def KOMIHASH_BMI2
+ * @brief Macro that denotes availability of `mulx` intrinsic (MSVC-compatible
+ * compilers only).
+ */
+
+#if defined( _MSC_VER )
+	#if defined( __BMI2__ ) || ( !defined( KOMIHASH_GCC_BUILTINS ) && \
+		defined( _M_AMD64 ) && defined( __AVX2__ ) && \
+		( defined( __INTEL_COMPILER ) || _MSC_VER >= 1900 ))
+
+		#include <immintrin.h>
+		#define KOMIHASH_BMI2
+
+	#else // BMI2
+
+		#include <intrin.h>
+
+	#endif // BMI2
+#endif // defined( _MSC_VER )
+
+/**
  * @def KOMIHASH_EC32( v )
  * @brief Macro that appies 32-bit byte-swapping, for endianness-correction.
  * Undefined for unknown compilers, if big-endian.
@@ -310,7 +331,7 @@
  * @def KOMIHASH_PREFETCH( a )
  * @brief Memory address prefetch macro, to preload some data into CPU cache.
  *
- * Temporal locality=2, in case a collision resolution would be necessary,
+ * Temporal locality=3, in case a collision resolution would be necessary,
  * or for a subsequent disk write.
  *
  * @param a Prefetch address.
@@ -318,13 +339,21 @@
 
 #if defined( KOMIHASH_GCC_BUILTINS ) && !defined( __COMPCERT__ )
 
-	#define KOMIHASH_PREFETCH( a ) __builtin_prefetch( a, 0, 2 )
+	#define KOMIHASH_PREFETCH( a ) __builtin_prefetch( a, 0, 3 )
 
-#else // Prefetch macro
+#elif defined( _MSC_VER ) && defined( _M_AMD64 ) && \
+	!defined( __INTEL_COMPILER )
+
+	#include <intrin.h>
+
+	#define KOMIHASH_PREFETCH( a ) _mm_prefetch( (const char*) ( a ), \
+		_MM_HINT_T0 )
+
+#else // defined( _MSC_VER )
 
 	#define KOMIHASH_PREFETCH( a ) (void) 0
 
-#endif // Prefetch macro
+#endif // defined( _MSC_VER )
 
 /**
  * @def KOMIHASH_INLINE
@@ -336,11 +365,15 @@
 
 	#define KOMIHASH_INLINE [[maybe_unused]] static inline
 
-#else // defined( __cplusplus )
+#elif defined( KOMIHASH_GCC_BUILTINS )
+
+	#define KOMIHASH_INLINE static __attribute__((unused)) inline
+
+#else // defined( KOMIHASH_GCC_BUILTINS )
 
 	#define KOMIHASH_INLINE static inline
 
-#endif // defined( __cplusplus )
+#endif // defined( KOMIHASH_GCC_BUILTINS )
 
 /**
  * @def KOMIHASH_INLINE_F
@@ -438,8 +471,16 @@ KOMIHASH_INLINE_F uint64_t kh_lu64ec( const uint8_t* const p ) KOMIHASH_NOEX
  * @param v Multiplier 2.
  */
 
-#if defined( _MSC_VER ) && ( defined( _M_ARM64 ) || defined( _M_ARM64EC ) || \
-	( defined( __INTEL_COMPILER ) && defined( _M_X64 )))
+#if defined( KOMIHASH_BMI2 )
+
+	#define KOMIHASH_M128_IMPL \
+		unsigned long long rh; \
+		*rl = _mulx_u64( u, v, &rh ); \
+		*rha += rh;
+
+#elif defined( _MSC_VER ) && \
+	( defined( _M_ARM64 ) || defined( _M_ARM64EC ) || \
+	( defined( __INTEL_COMPILER ) && defined( _M_AMD64 )))
 
 	#define KOMIHASH_M128_IMPL \
 		const uint64_t rh = __umulh( u, v ); \
@@ -459,7 +500,8 @@ KOMIHASH_INLINE_F uint64_t kh_lu64ec( const uint8_t* const p ) KOMIHASH_NOEX
 	( defined( KOMIHASH_ICC_GCC ) && defined( __x86_64__ ))
 
 	#define KOMIHASH_M128_IMPL \
-		const __uint128_t r = (__uint128_t) u * v; \
+		__uint128_t r = u; \
+		r *= v; \
 		const uint64_t rh = (uint64_t) ( r >> 64 ); \
 		*rl = (uint64_t) r; \
 		*rha += rh;
@@ -619,12 +661,12 @@ void kh_m128( const uint64_t u, const uint64_t v,
 		Msg += 64; \
 		MsgLen -= 64; \
 	\
-		Seed2 ^= Seed5; \
-		Seed3 ^= Seed6; \
+		KOMIHASH_PREFETCH( Msg ); \
+	\
 		Seed4 ^= Seed7; \
 		Seed1 ^= Seed8; \
-	\
-		KOMIHASH_PREFETCH( Msg ); \
+		Seed3 ^= Seed6; \
+		Seed2 ^= Seed5; \
 	\
 	} while KOMIHASH_LIKELY( MsgLen > 63 )
 
@@ -643,7 +685,7 @@ KOMIHASH_INLINE_F uint64_t komihash_epi( const uint8_t* Msg, size_t MsgLen,
 {
 	uint64_t r1h, r2h;
 
-	if KOMIHASH_LIKELY( MsgLen > 31 )
+	if( MsgLen > 31 )
 	{
 		KOMIHASH_HASH16( Msg );
 		KOMIHASH_HASH16( Msg + 16 );
@@ -835,22 +877,19 @@ _long:
 /**
  * @brief KOMIRAND 64-bit pseudo-random number generator.
  *
- * Simple, reliable, self-starting yet efficient PRNG, with 2^64 period.
- * 0.62 cycles/byte performance. Self-starts in 4 iterations, which is a
- * suggested "warming up" initialization before using its output.
- *
- * While for simplicity it is possible to use the same initial value for both
- * the `Seed1` and `Seed2` variables, these variables can be also
- * independently initialized with two high-quality uniformly-random values
- * (e.g., from operating system's entropy, or a hash function's outputs). Such
- * initialization reduces the number of "warm up" iterations - that way the
- * PRNG output will be valid from the let go.
+ * Simple, reliable, self-starting, yet efficient PRNG with a 2^64 period.
+ * 0.62 cycles/byte performance. It self-starts in 4 iterations, which is the
+ * suggested "warm-up" period before using its output when seeds are
+ * initialized with an arbitrary value. If initialized with high-quality,
+ * uniformly random value (e.g., from the operating system's entropy or a
+ * hash function's output), the PRNG output is valid from the start.
  *
  * @param[in,out] Seed1 Seed value 1. Can be initialized to any value
  * (even 0). This is the usual "PRNG seed" value.
- * @param[in,out] Seed2 Seed value 2, a supporting variable. In the simplest
- * case, can be initialized to the same value as `Seed1`.
- * @return The next uniformly-random 64-bit value.
+ * @param[in,out] Seed2 Seed value 2, a supporting variable. Must be
+ * initialized to the same value as `Seed1`. Should not be used as the PRNG
+ * value.
+ * @return The next uniformly random 64-bit value.
  */
 
 KOMIHASH_INLINE_F uint64_t komirand( uint64_t* const Seed1,
@@ -1146,6 +1185,7 @@ using KOMIHASH_NS :: komihash_stream_oneshot;
 #undef KOMIHASH_COND_EC
 #undef KOMIHASH_ICC_GCC
 #undef KOMIHASH_GCC_BUILTINS
+#undef KOMIHASH_BMI2
 #undef KOMIHASH_EC32
 #undef KOMIHASH_LIKELY
 #undef KOMIHASH_UNLIKELY
