@@ -1,8 +1,8 @@
-# NAME
+## Name
 
 Crypt::Komihash - Komihash implementation in Perl
 
-# SYNOPSIS
+## Synopsis
 
 ```perl
 use Crypt::Komihash qw(komihash komihash_hex komirand_seed komirand64);
@@ -17,7 +17,7 @@ komirand_seed($seed1, $seed2);
 my $rand    = komirand64();
 ```
 
-# DESCRIPTION
+## Description
 
 Komihash is a super fast modern hashing algorithm that converts strings into
 64bit integers. Mainly designed for hash-table, hash-map, and bloom-filter
@@ -27,7 +27,7 @@ Komihash: [https://github.com/avaneev/komihash](https://github.com/avaneev/komih
 
 **Note:** This module _requires_ a 64bit CPU
 
-# METHODS
+## Methods
 
 ### **$num = komihash($bytes, $seed = 0)**
 
@@ -45,17 +45,17 @@ seed the Komirand PRNG with two 64bit unsigned integers
 
 returns a random 64bit unsigned integer
 
-# BUGS
+## Bugs
 
 Submit issues on Github: [https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues](https://github.com/scottchiefbaker/perl-Crypt-Komihash/issues)
 
-# SEE ALSO
+## See Also
 
 - Crypt::xxHash
 - Digest::FarmHash
 - Digest::SpookyHash
 - Digest::SHA
 
-# AUTHOR
+## Author
 
 Scott Baker - [https://www.perturb.org/](https://www.perturb.org/)
