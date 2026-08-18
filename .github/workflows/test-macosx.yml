@@ -8,6 +8,9 @@ on:
       - '*'
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   perl:
     runs-on: macos-latest
@@ -15,16 +18,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: install dependencies
-        run: |
-            brew update ||:
-            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install perl giflib libjpeg-turbo libtiff freetype libpng
       - name: configure
-        run: |
-            perl Makefile.PL
+        run: perl Makefile.PL
       - name: build
-        run: |
-            make -j2
+        run: make
       - name: test
-        run: |
-            HARNESS_OPTIONS=j2 make test
+        run: make test

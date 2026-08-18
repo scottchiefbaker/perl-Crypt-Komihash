@@ -7,21 +7,19 @@ on:
       - '*'
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  imager:
+  perl:
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - run: git config --global core.autocrlf false
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: configure
-        run: |
-           $env:path = "c:\strawberry\c\bin;"+$env:path
-           perl Makefile.PL
+        run: perl Makefile.PL
       - name: build
-        run: |
-           $env:path = "c:\strawberry\c\bin;"+$env:path
-           gmake -j3
+        run: gmake
       - name: test
-        run: |
-           gmake test HARNESS_OPTIONS=j2
+        run: gmake test
