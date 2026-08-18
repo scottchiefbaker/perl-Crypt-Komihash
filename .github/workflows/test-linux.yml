@@ -28,6 +28,8 @@ jobs:
           perl-version: ${{ matrix.perl }}
       - name: show Perl configuration
         run: perl -V
+      - name: install build prerequisites
+        run: cpanm --notest ExtUtils::MakeMaker@7.12
       - name: configure
         run: perl Makefile.PL
       - name: build
@@ -45,6 +47,8 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: latest
+      - name: install build prerequisites
+        run: cpanm --notest ExtUtils::MakeMaker@7.12
       - name: configure
         run: perl Makefile.PL
       - name: distribution test
