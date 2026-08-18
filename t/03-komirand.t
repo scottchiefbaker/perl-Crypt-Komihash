@@ -3,9 +3,12 @@ use warnings;
 use Test::More;
 use Crypt::Komihash qw(komirand_seed komirand64);
 
+my @arr = ();
+
 komirand_seed(0, 0);
+@arr = get_random_array(4);
 is_deeply(
-	[map { komirand64() } 1 .. 4],
+	\@arr,
 	[
 		12297829382473034410,
 		18446744073709551614,
@@ -16,8 +19,9 @@ is_deeply(
 );
 
 komirand_seed(1, 1);
+@arr = get_random_array(4);
 is_deeply(
-	[map { komirand64() } 1 .. 4],
+	\@arr,
 	[
 		12297829382473034410,
 		2635249153387078805,
@@ -28,8 +32,9 @@ is_deeply(
 );
 
 komirand_seed(81985529216486895, 18364758544493064720);
+@arr = get_random_array(4);
 is_deeply(
-	[map { komirand64() } 1 .. 4],
+	\@arr,
 	[
 		9844736621421215500,
 		15727883774196923382,
@@ -40,8 +45,9 @@ is_deeply(
 );
 
 komirand_seed(18446744073709551615, 18446744073709551615);
+@arr = get_random_array(4);
 is_deeply(
-	[map { komirand64() } 1 .. 4],
+	\@arr,
 	[
 		12297829382473034406,
 		5270498306774157656,
@@ -52,10 +58,24 @@ is_deeply(
 );
 
 komirand_seed(0, 0);
-my @first = map { komirand64() } 1 .. 4;
+my @first = get_random_array(4);
 komirand_seed(0, 0);
-my @repeat = map { komirand64() } 1 .. 4;
+my @repeat = get_random_array(4);
 
 is_deeply(\@repeat, \@first, 're-seeding reproduces the sequence');
 
 done_testing();
+
+################################################################################
+################################################################################
+
+sub get_random_array {
+	my $num = shift();
+	my @ret = ();
+
+	for (1 .. $num) {
+		push(@ret, komirand64());
+	}
+
+	return @ret;
+}
