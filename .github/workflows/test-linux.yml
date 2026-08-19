@@ -21,7 +21,7 @@ jobs:
         perl: ['5.16', '5.32', 'latest']
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: setup Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: setup Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
